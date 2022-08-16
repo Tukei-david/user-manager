@@ -53,7 +53,8 @@
                             @endif
                         @else
 
-                        <li class="nav-item dropdown">
+                        @if (Auth::user()->isAdmin())
+                            <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     Users
                                 </a>
@@ -62,6 +63,9 @@
                                     <a class="dropdown-item" href="{{ route('users.dashboard') }}">Manage Users</a>
                                 </div>
                             </li>
+                        @endif
+
+                        
 
                         
                             <li class="nav-item dropdown">
