@@ -7,12 +7,17 @@
                 <button 
                     class="btn btn-outline-success btn-sm float-right" 
                     style="float: right;"
-                    @click="setActive('CreateUser')">
+                    @click="setActive('createUser')">
                     &plus;
                     <i class="fas fas-plus"></i>
                     User
                 </button>
             </h3>
+            <div 
+                class="alert-success alert" role="alert"
+                v-if="success_message !== null">
+                {{ success_message }}
+            </div>
 
             <PagePaginator
                 v-if="results !== null"
@@ -60,7 +65,9 @@
     </div>
 
     <CreateUser
-        v-if="active.CreateUser"
+        v-if="active.createUser"
+        v-on:view-dashboard="setActive('dashboard')"
+        v-on:created-user="flashSuccessAndReload($event)"
     >
 
     </CreateUser>
@@ -87,11 +94,12 @@
                 results: null,
                 active: {
                     dashboard: true,
-                    CreateUser: false
+                    createUser: false
                 },
                 params: {
                     page: 1
-                }
+                },
+                success_message: null,
             }
         },
         methods: {
@@ -106,8 +114,13 @@
                 this.getUsers()
             },
             setActive: function(component) {
-                Object:keys(this.active).forEach(key => this.active[key] = false)
+                Object.keys(this.active).forEach(key => this.active[key] = false)
                 this.active[component] = true
+            },
+            flashSuccessAndReload: function(event) {
+                this.setActive('dashboard')
+                this.success_message = event
+                this.getUsers()
             }
         }
     }
